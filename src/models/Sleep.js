@@ -1,3 +1,3 @@
-import mongoose from "mongoose";
+const mongoose =require("mongoose")
 
-export const Sleep = mongoose.model("Sleep", { time:Number,type:String  });
+module.exports=  Sleep = mongoose.model("Sleep", { time:Number,type:String  });

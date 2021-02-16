@@ -1,6 +1,6 @@
-import { Sleep } from "./models/Sleep";
+const { Sleep } =require ("./models/Sleep")
 
-import GraphQLDateTime from "graphql-type-datetime";
+const GraphQLDateTime =require ("graphql-type-datetime")
 
 export const resolvers = {
   Query: {

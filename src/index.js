@@ -1,13 +1,14 @@
-import { ApolloServer, gql, PubSub } from "apollo-server-express";
-import express from "express";
-import mongoose from "mongoose";
-import { typeDefs } from "./typeDefs";
-import cors from "cors";
-import { Sleep } from "./models/Sleep";
+const { ApolloServer, gql, PubSub } = require("apollo-server-express");
+const express = require("express");
+const mongoose = require("mongoose");
+const typeDefs = require("./typeDefs");
+const cors = require("cors");
+const Sleep = require("./models/Sleep");
+console.log(Sleep);
 const path = require("path");
 
-const http = require('http');
-import GraphQLDateTime from "graphql-type-datetime";
+const http = require("http");
+const GraphQLDateTime = require("graphql-type-datetime");
 
 const pubsub = new PubSub();
 let currentNumber = 0;
@@ -17,9 +18,9 @@ function incrementNumber() {
   setTimeout(incrementNumber, 1000);
 }
 
-export const resolvers = {
+resolvers = {
   Subscription: {
-    sleepChanged:{
+    sleepChanged: {
       subscribe: () => pubsub.asyncIterator(["SLEEP_CHANGED"]),
     },
     numberIncremented: {
@@ -35,7 +36,7 @@ export const resolvers = {
   },
   Mutation: {
     createSleep: async (_, { time, type }) => {
-      pubsub.publish('SLEEP_CHANGED', { sleepChanged: {time, type} });
+      pubsub.publish("SLEEP_CHANGED", { sleepChanged: { time, type } });
       const sleep = new Sleep({ time, type });
       await sleep.save();
       return sleep;
@@ -46,19 +47,19 @@ export const resolvers = {
 const startServer = async () => {
   const app = express();
   app.use(cors());
-  app.use(express.static(__dirname +'/ui/build/'));
+  // app.use(express.static(__dirname + "/ui/build/"));
 
-  app.all('/', function(req, res, next) {
+  app.all("/", function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next();
-   });
+  });
 
-   app.use(express.urlencoded({ extended: false }));
-app.use(express.json())
-  
+  app.use(express.urlencoded({ extended: false }));
+  app.use(express.json());
+
   app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname ,"/client/build/index.html"));
+    res.send("running");
   });
 
   const server = new ApolloServer({
@@ -74,10 +75,9 @@ app.use(express.json())
     },
   });
 
-
   incrementNumber();
   server.applyMiddleware({ app });
-  const port = process.env.PORT? process.env.PORT:4000
+  const port = process.env.PORT ? process.env.PORT : 4000;
   const httpServer = http.createServer(app);
   server.installSubscriptionHandlers(httpServer);
   await mongoose.connect(
@@ -88,7 +88,6 @@ app.use(express.json())
   );
 
   httpServer.listen({ port: port }, () => {
-    
     console.log(`🚀 Server ready at http://localhost:${port}`);
     console.log(
       `🚀 Subscription endpoint ready at ws://localhost:${port}${server.subscriptionsPath}`
