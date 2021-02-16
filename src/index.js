@@ -87,7 +87,7 @@ app.use(express.json())
     }
   );
 
-  httpServer.listen({ port: 4000 }, () => {
+  httpServer.listen({ port: process.env.PORT }, () => {
     console.log(`🚀 Server ready at http://localhost:4000`);
     console.log(
       `🚀 Subscription endpoint ready at ws://localhost:${4000}${server.subscriptionsPath}`
