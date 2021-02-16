@@ -1,15 +1,17 @@
-import { Cat } from "./models/Cat";
+import { Sleep } from "./models/Sleep";
+
+import GraphQLDateTime from "graphql-type-datetime";
 
 export const resolvers = {
   Query: {
     hello: () => "hi",
-    cats: () => Cat.find()
+    sleeps: () => Sleep.find(),
   },
   Mutation: {
-    createCat: async (_, { name }) => {
-      const kitty = new Cat({ name });
-      await kitty.save();
-      return kitty;
-    }
-  }
+    createSleep: async (_, { time, type }) => {
+      const sleep = new Sleep({ time, type });
+      await sleep.save();
+      return sleep;
+    },
+  },
 };

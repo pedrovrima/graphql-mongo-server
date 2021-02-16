@@ -3,15 +3,25 @@ import { gql } from "apollo-server-express";
 export const typeDefs = gql`
   type Query {
     hello: String!
-    cats: [Cat!]!
+    sleeps(last:Int): [Sleep!]!
+    currentNumber: Int
+
   }
 
-  type Cat {
+  type Subscription {
+    numberIncremented: Int
+    sleepChanged: Sleep!
+  }
+
+  scalar DateTime 
+
+  type Sleep {
     id: ID!
-    name: String!
+    time:   DateTime!
+    type:  String!
   }
 
   type Mutation {
-    createCat(name: String!): Cat!
+    createSleep(time:   DateTime!, type:  String!): Sleep!
   }
 `;
