@@ -77,7 +77,7 @@ app.use(express.json())
 
   incrementNumber();
   server.applyMiddleware({ app });
-
+  const port = process.env.PORT? process.env.PORT:4000
   const httpServer = http.createServer(app);
   server.installSubscriptionHandlers(httpServer);
   await mongoose.connect(
@@ -87,11 +87,11 @@ app.use(express.json())
     }
   );
 
-  httpServer.listen({ port: (process.env.PORT? process.env.PORT:4000) }, () => {
+  httpServer.listen({ port: port }, () => {
     
-    console.log(`🚀 Server ready at http://localhost:4000`);
+    console.log(`🚀 Server ready at http://localhost:${port}`);
     console.log(
-      `🚀 Subscription endpoint ready at ws://localhost:${4000}${server.subscriptionsPath}`
+      `🚀 Subscription endpoint ready at ws://localhost:${port}${server.subscriptionsPath}`
     );
   });
 };
