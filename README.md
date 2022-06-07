@@ -3,6 +3,8 @@
 This is an app I created when me an dmy wife were worried about my newborn daughters sleep cycle. 
 It's a PWA built using React and GraphQL.
 
+You can fin the UI code here: https://github.com/pedrovrima/baby-tracker-ui
+
 ## How it works
 
 The app is coded so that both my wife and I could use the app independently on our phones. First I coded the backend with Apollo Client listener, but since the app is hosted on a free Heroku dyno, it did not work. So I decided to get the client querying the DB constantly (so that changes in my phone would quickly display on my wife's phone and vice-versa).
